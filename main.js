@@ -25,46 +25,89 @@ let listaart = [articulo1,articulo2,articulo3,articulo4,articulo5,articulo6,arti
 
 /*funcion para buscar articulos */
 function buscarart(){
-    let artbuscado = prompt ("articulo a buscar:").trim().toLowerCase()
+    const body = document.querySelector("body")
+    const input = document.getElementById("buscararticulo").value
+    let artbuscado = input.trim().toLowerCase()
     let resultado = listaart.filter((artnombre)=>artnombre.nombre.toLowerCase().includes(artbuscado))
         if(resultado.length > 0){
-            console.table (resultado)
-        }
-        else
-           alert ("no se encontro coincidencia con el articulo buscado: " + artbuscado)
+            const contenedor = document.createElement("div")
+            resultado.forEach((artnombre)=>{
+                const tarjeta = document.createElement("div")
+                /*para el nombre del articulo*/
+                const nombre =document.createElement("h3")
+                nombre.textContent= artnombre.nombre
+                tarjeta.appendChild(nombre)
+                /*para el tamaño */
+                const tamano =document.createElement("p")
+                tamano.textContent=artnombre.tamano
+                tarjeta.appendChild(tamano)
+                /*para el precio */
+                const precio =document.createElement("p")
+                precio.textContent=artnombre.precio
+                tarjeta.appendChild(precio)
+                /*para la cantidad */
+                const cantidad =document.createElement("p")
+                cantidad.textContent=artnombre.cantidad
+                tarjeta.appendChild(cantidad)
+                /*para crear tarjeta conb todos los datos */
+                contenedor.appendChild(tarjeta)
+            })
+        body.appendChild(contenedor)  
+        }else{
+           alert ("no se encontro coincidencia con el articulo buscado: " + artbuscado)}  
+      
+}
 
-        
-    }
+
+/*boton buscar */
+let btnBuscar =document.getElementById("buscar")
+btnBuscar.addEventListener("click",buscarart)
+
 /*funcion para agregar articulo*/
 function agregarart (){
-    let nombre = prompt ("ingrese el nombre el Articulo").toLowerCase()
-    let tamano = parseFloat (prompt("ingrese litros que contiene el producto"))
-    let precio = prompt("ingre el valor del articulo")
-    let cantidad = parseInt (prompt("ingrese la cantidad en existencia"))
-    /*validacion de los datos ingresados*/
-        if(isNaN(tamano) || isNaN(precio) || isNaN (cantidad) || nombre==" "){
-            alert("verifica los datos ingresados alguno de ellos esta mal")
-            return
-        }
-        let articulo = new Articulo (nombre,tamano,precio,cantidad)
+    const formulario = document.createElement("formulario")
+    formulario.innerHTML= `
+        <label formulario = "nombre-input">Nombre:</label>
+        <input id= "nombre-input" type="text"required>
 
-    /*Chequeo de la existencia del producto*/
-        if(listaart.some((comparaart)=>comparaart.nombre=== Articulo)){
+        <label formulario = "tamano-input">Tamano:</label>
+        <input id= "tamano-input" type "number" step=0.01 required>
+
+        <label formulario = "precio-input"> Precio: </label>
+        <input id= "precio-input" type "number" step="1" requeried>
+
+        <label formulario = cantidad-input">Cantidad: <*/label>
+        <input id= "cantidad-input" type "number" step="1.01 required>
+
+        <button type = "submit"> Agregar articulo </button>
+    `
+    formulario.addEventListener("submit",function(event){
+        event.preventDefault()
+        const nombreInput =document.getElementById("nombre-input").value.trim()
+        const tamanoInput =parsentfloat(document.getElementById("tamano-input").value.trim())
+        const precioInput =parsentfloat(document.getElementById("precio-input").value.trim())
+        const cantidadInput = parseInt( document.getElementById("cantidad-input").value.trim())
+
+        /*inicio del if de validacion*/
+        if(isNaN(tamanoInput)|| isNaN(precioInput)||isNaN(cantidadInput)|| nombreInput==""){
+            alert("verifica los datos ingresados")
+            return;
+
+        }
+
+
+        cosnt articulonew = new Articulo (nombreInput,tamanoInput,precioInput,cantidadInput)
+
+        if(listaart.some((comparaart)=>comparaart.nombre=== articulonew.nombre)){
             alert ("el producto ingresao ya esta en la lista")
             return
         }
-    listaart.push (articulo)
-    console.table(listaart)
+        listaart.push (articulonew)
+
+
+    })
+
 }
-menu =parseInt(prompt("seleccione una de las opciones:  1 para buscar un articulo o 2 para ingresar un nuevo articulo"))
-if(menu > 2){
-    alert("el dato ingresado no es uno de los solicitados")       
-} 
-else
-    if(menu === 1){
-        buscarart()
-    }
-    else
-        agregarart()
-
-
+/* boton agregar */
+let btnagregar =document.getElementById("agregar")
+btnagregar.addEventListener("click",agregarart)
