@@ -49,7 +49,7 @@ function buscarart(){
                 const cantidad =document.createElement("p")
                 cantidad.textContent=artnombre.cantidad
                 tarjeta.appendChild(cantidad)
-                /*para crear tarjeta conb todos los datos */
+                /*para crear tarjeta con todos los datos */
                 contenedor.appendChild(tarjeta)
             })
         body.appendChild(contenedor)  
@@ -63,51 +63,46 @@ function buscarart(){
 let btnBuscar =document.getElementById("buscar")
 btnBuscar.addEventListener("click",buscarart)
 
-/*funcion para agregar articulo*/
-function agregarart (){
-    const formulario = document.createElement("formulario")
-    formulario.innerHTML= `
-        <label formulario = "nombre-input">Nombre:</label>
-        <input id= "nombre-input" type="text"required>
+       function agregarart() {
+        const formulario = document.createElement("form");
+        formulario.innerHTML = `
+            <label for="nombre-input">Nombre:</label>
+            <input id="nombre-input" type="text" required>
+    
+            <label for="tamano-input">Tamano:</label>
+            <input id="tamano-input" type="number" step="0.01" required>
+    
+            <label for="precio-input">Precio:</label>
+            <input id="precio-input" type="number" step="1" required>
+    
+            <label for="cantidad-input">Cantidad:</label>
+            <input id="cantidad-input" type="number" step="1" required>
+    
+            <button type="submit" id="agregar">Agregar</button>
+        `;
+        formulario.addEventListener("submit", function(event) {
+            event.preventDefault();
+            const nombreInput = document.getElementById("nombre-input").value.trim();
+            const tamanoInput = parseFloat(document.getElementById("tamano-input").value.trim());
+            const precioInput = parseFloat(document.getElementById("precio-input").value.trim());
+            const cantidadInput = parseInt(document.getElementById("cantidad-input").value.trim());
+    
+            /* Resto del código de validación y manipulación de datos */
+            if(isNaN(tamanoInput)|| isNaN(precioInput)||isNaN(cantidadInput)|| nombreInput==""){
+                alert("verifica los datos ingresados")
+                return;
+            }
+            const articulonew = new Articulo (nombreInput,tamanoInput,precioInput,cantidadInput);
 
-        <label formulario = "tamano-input">Tamano:</label>
-        <input id= "tamano-input" type "number" step=0.01 required>
-
-        <label formulario = "precio-input"> Precio: </label>
-        <input id= "precio-input" type "number" step="1" requeried>
-
-        <label formulario = cantidad-input">Cantidad: <*/label>
-        <input id= "cantidad-input" type "number" step="1.01 required>
-
-        <button type = "submit"> Agregar articulo </button>
-    `
-    formulario.addEventListener("submit",function(event){
-        event.preventDefault()
-        const nombreInput =document.getElementById("nombre-input").value.trim()
-        const tamanoInput =parsentfloat(document.getElementById("tamano-input").value.trim())
-        const precioInput =parsentfloat(document.getElementById("precio-input").value.trim())
-        const cantidadInput = parseInt( document.getElementById("cantidad-input").value.trim())
-
-        /*inicio del if de validacion*/
-        if(isNaN(tamanoInput)|| isNaN(precioInput)||isNaN(cantidadInput)|| nombreInput==""){
-            alert("verifica los datos ingresados")
-            return;
-
-        }
-
-
-        cosnt articulonew = new Articulo (nombreInput,tamanoInput,precioInput,cantidadInput)
-
-        if(listaart.some((comparaart)=>comparaart.nombre=== articulonew.nombre)){
-            alert ("el producto ingresao ya esta en la lista")
-            return
-        }
-        listaart.push (articulonew)
-
-
-    })
-
-}
-/* boton agregar */
-let btnagregar =document.getElementById("agregar")
-btnagregar.addEventListener("click",agregarart)
+            listaart.push(articulonew);
+    });
+    
+        const body = document.querySelector("body");
+        body.appendChild(formulario);
+    
+        let btnagregar = document.getElementById("agregar");
+        btnagregar.addEventListener("click", agregarart);
+        
+/*boton agregar*/ 
+/*let btnagregar =document.getElementById("agregar")
+btnagregar.addEventListener("click",agregarart)*/
